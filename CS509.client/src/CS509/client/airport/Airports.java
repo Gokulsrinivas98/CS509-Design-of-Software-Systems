@@ -6,6 +6,7 @@ package CS509.client.airport;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -158,5 +159,26 @@ public class Airports extends ArrayList<Airport> {
 	        return cd.getData();
 	      }
 	      return "";
+	}
+	
+	/**  Does the list contain the airport?
+	 * @param String input 3 digit code
+	 * @return Boolean true/false if the list has the associated airport.
+	 */
+	
+	public Boolean containsCode(String code) {
+		Boolean containsCode = false;
+		
+		Iterator<Airport> iter = this.iterator();
+		
+		if(!iter.hasNext()) {
+			return false;
+		}
+		
+		while(iter.hasNext()) {
+			containsCode |= (iter.next().code().equalsIgnoreCase(code));
+		}
+		
+		return containsCode;
 	}
 }

@@ -266,7 +266,18 @@ public class Flight {
 	 */
 	public void setmSeatsCoach(int mSeatsCoach) {
 		this.mSeatsCoach = mSeatsCoach;
-	}	
+	}
+	
+	/**
+	 * This method returns the string representation of a flight.
+	 * 
+	 * @return String representing pertinent information about the flight.
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return "Flight " + this.mNumber + ": Departing " + this.mCodeDepart + " at " + this.mTimeDepart + ", Arriving " + this.mCodeArrival + " at " + this.mTimeArrival;
+	}
 }
  
 
