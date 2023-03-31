@@ -5,8 +5,14 @@ package CS509.client.flight;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Iterator;
+//----------------------
+// import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+//----------------------
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,6 +37,46 @@ public class Flights extends ArrayList <Flight> {
 
 	private static final long serialVersionUID = 1L;
 
+	// public static void sortByArrivalAirport(List<String> flights) {
+	// 	Comparator<String> comparator = new Comparator<String>() {
+	// 		public int compare(String o1, String o2) {
+	// 			String arr1 = o1.split(",")[2];
+	// 			String arr2 = o2.split(",")[2];
+	// 			return arr1.compareTo(arr2);
+	// 		}
+	// 	};
+	// 	Collections.sort(flights, comparator);
+	// }
+	
+	// public String filterByArrival(String arr, List<String> flights) {
+	// 	List<String> res = new ArrayList<>();
+	// 	for (String flight : flights) {
+	// 		String[] flightData = flight.split(",");
+	// 		String arrAirportCode = flightData[2];
+	// 		if (arrAirportCode.equals(arr)) {
+	// 			res.add(flight);
+	// 		}
+	// 	}
+	// 	return String.join("\n", res);
+	// }
+	// public void sortByArrivalAirport(){
+	// 	Comparator<Flight> comparator = new Comparator<Flight>(){
+	// 			public int compare(Flight o1, Flight o2) {
+	// 		return o1.getmCodeArrival().compareTo(o2.getmCodeArrival());
+	// 			}
+	// 	};
+				
+	//    Collections.sort(this, comparator);
+	// }
+	// public Flight filterByArrival(String arr, Flights flights){
+	// 	Flights res= new Flights();
+	// 	for(Flight flight: flights){
+	// 		if(flight.getmCodeArrival().equals(arr)){
+	// 			res.add(flight);
+	// 		}
+	// 	}
+	// 	return res.toString();
+	// }
 	public boolean addAll (String xmlFlights) {
 		
 		boolean collectionUpdated = false;
@@ -52,6 +98,27 @@ public class Flights extends ArrayList <Flight> {
 		
 		return collectionUpdated;
 	}
+	//---------------------------
+	public Flights addAllf (String xmlFlights) throws NullPointerException {
+		Flights flights = new Flights();
+		
+		
+		// Load the XML string into a DOM tree for ease of processing
+		// then iterate over all nodes adding each flight to our collection
+		Document docFlights = buildDomDoc (xmlFlights);
+		NodeList nodesFlights = docFlights.getElementsByTagName("Flight");
+		
+		for (int i = 0; i < nodesFlights.getLength(); i++) {
+			Element elementFlight = (Element) nodesFlights.item(i);
+			Flight flight = buildFlight (elementFlight);
+			
+			flights.add(flight);
+		}
+		
+		return flights;
+	}
+
+	//--------------------------
 	
 	/**
 	 * Builds a DOM tree form an XML string
@@ -174,6 +241,20 @@ public class Flights extends ArrayList <Flight> {
 	        return cd.getData();
 	      }
 	      return "";
+	}
+	@Override
+	public String toString() {
+		String builtList = new String();
+		Iterator<Flight> iter = this.iterator();
+		
+		if(!iter.hasNext()) {
+			return "No flights in list";
+		}
+		
+		while(iter.hasNext()) {
+			builtList += iter.next().toString() + "\r\n";
+		}
+		return builtList;
 	}
 
 }

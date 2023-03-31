@@ -219,4 +219,16 @@ public class Airport {
 		
 		return true;
 	}
+	/**
+	 * Provide a method to return the string representation of Airport
+	 * 
+	 * @return String
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return this.mCode + ": " + this.mName;
+		// return this.mName;
+	}
+
 }
