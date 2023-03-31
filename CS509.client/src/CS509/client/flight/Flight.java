@@ -59,7 +59,7 @@ public class Flight {
 		mSeatsFirstclass = seatsFirstclass;
 		mPriceCoach = priceCoach;
 		mSeatsCoach = seatsCoach;
-		line = "--------------------------------------------------------";
+		line = "---------------------------------------------------------------";
 		
 	}
 	// @Override
@@ -286,7 +286,10 @@ public class Flight {
 	// 	return "Flight " + this.mNumber + ": Departing " + this.mCodeDepart + " at " + this.mTimeDepart + ", Arriving " + this.mCodeArrival + " at " + this.mTimeArrival;
 	// }
 	public String toString() {
-		return "Flight " + this.mNumber + "\t " + this.mCodeDepart + " ---------------->" +this.mCodeArrival+"\n\t" + this.mTimeDepart + "\t" + this.mTimeArrival +"\n"+ this.line;
+		return "\tFlight\t\t Departure\t\t Arrival\n\t" + 
+		this.mNumber + "\t\t " + this.mCodeDepart + " --------------------> " +this.mCodeArrival+
+		"\nTime\t\t" + this.mTimeDepart + "\t" + this.mTimeArrival +
+		"\n"+ this.line;
 	}	
 }
  

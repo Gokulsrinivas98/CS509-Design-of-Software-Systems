@@ -26,19 +26,19 @@ public class Driver {
 		Scanner s = new Scanner(System.in);
 		String team = "TeamC";
 		System.out.println("departAirportCode:");	
-	    String departure = s.nextLine();
+	    String departure = s.nextLine().toUpperCase();
 		System.out.println("departTime (YYYY_MM_DD) B/W. 2023_05_06 and 2023_05_31:");
 		String time = s.nextLine();
 //		System.out.println("arrivalAiportCode:");
 //		String arrival = s.nextLine();
 		//------------
 		// Try to get a list of airports
-		String xmlAirport = resSys.getAirports("TeamC");
+		String xmlAirport = resSys.getAirports(team);
 		Airports airports = new Airports();
 		airports.addAll(xmlAirport);
 
 		//-----------
-		String xmlFlights = resSys.getFlights("TeamC", departure, time,true);
+		String xmlFlights = resSys.getFlights(team, departure, time,true);
 //		System.out.println(xmlFlights);
 		//-----------
 		// Create the aggregate flights
