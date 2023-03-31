@@ -181,4 +181,23 @@ public class Airports extends ArrayList<Airport> {
 		
 		return containsCode;
 	}
+	
+	/** toString override for the Airports object.
+	 * @author lombardi
+	 * @return String
+	 */
+	@Override
+	public String toString() {
+		String builtList = new String();
+		Iterator<Airport> iter = this.iterator();
+		
+		if(!iter.hasNext()) {
+			return "No airports in list";
+		}
+		
+		while(iter.hasNext()) {
+			builtList += iter.next().toString() + "\r\n";
+		}
+		return builtList;
+	}
 }
