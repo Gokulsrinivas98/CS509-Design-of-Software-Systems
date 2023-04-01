@@ -6,6 +6,7 @@ package CS509.client.flight;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,6 +33,7 @@ public class Flights extends ArrayList <Flight> {
 	private static final long serialVersionUID = 1L;
 
 	public boolean addAll (String xmlFlights) {
+	
 		
 		boolean collectionUpdated = false;
 		
@@ -176,4 +178,22 @@ public class Flights extends ArrayList <Flight> {
 	      return "";
 	}
 
+	/** toString override for the Flights object.
+	 * @author lombardi
+	 * @return String
+	 */
+	@Override
+	public String toString() {
+		String builtList = new String();
+		Iterator<Flight> iter = this.iterator();
+		
+		if(!iter.hasNext()) {
+			return "No flights in list";
+		}
+		
+		while(iter.hasNext()) {
+			builtList += iter.next().toString() + "\r\n";
+		}
+		return builtList;
+	}
 }
