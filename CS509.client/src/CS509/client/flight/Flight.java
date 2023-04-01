@@ -33,6 +33,7 @@ public class Flight {
 	private int mSeatsFirstclass;
 	private String mPriceCoach;
 	private int mSeatsCoach;
+	private String line = "---------------------------------------------------------------";
 	
 	public Flight (
 			String airplane,
@@ -276,7 +277,11 @@ public class Flight {
 	 */
 	@Override
 	public String toString() {
-		return "Flight " + this.mNumber + ": Departing " + this.mCodeDepart + " at " + this.mTimeDepart + ", Arriving " + this.mCodeArrival + " at " + this.mTimeArrival;
+//		return "Flight " + this.mNumber + ": Departing " + this.mCodeDepart + " at " + this.mTimeDepart + ", Arriving " + this.mCodeArrival + " at " + this.mTimeArrival;
+		return "\tFlight\t\t Departure\t\t Arrival\n\t" +
+        this.mNumber + "\t\t " + this.mCodeDepart + " --------------------> " +this.mCodeArrival+
+        "\nTime\t\t" + this.mTimeDepart + "\t" + this.mTimeArrival +
+        "\n"+ this.line;
 	}
 }
  
