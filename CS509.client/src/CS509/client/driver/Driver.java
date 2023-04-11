@@ -40,12 +40,15 @@ public class Driver {
 		String trip = s.nextLine().toUpperCase();
 		System.out.println("Seating Class (Coach, FirstClass): ");
 		String sclass = s.nextLine().toUpperCase();
-//		System.out.println("Number of Seats :");
-//		int seats = s.nextInt();
-		int seats = 30;
+		System.out.println("Number of Seats :");
+		int seats = s.nextInt();
+		s.nextLine(); 
+		//When s.nextInt() is called, it reads only the integer value and leaves the newline character in the input buffer.
+		//When s.nextLine() is called after s.nextInt(), it reads the newline character and stops, resulting in no input being 
+		//taken from the user. To resolve this issue, an extra s.nextLine() call after s.nextInt() is added to consume the 
+		//newline character from the input buffer.
+
 		boolean coach = true; //1 for coach and 0 for FirstClass
-//		System.out.println("Input the number of layover");
-		//------------
 		// Try to get a list of airports
 		String xmlAirport = resSys.getAirports(team);
 		Airports airports = new Airports();
@@ -53,14 +56,15 @@ public class Driver {
 		if (sclass.equals("FIRSTCLASS")) {
 			coach = false;			
 		}
-		if (trip.equals("ONEWAY")) {
+		if (trip.equals("ONEWAY")) { //if oneway, the search is done for fights on the first day 
 			searchFlight(team,departure,arrival,time,seats,coach);}
-		else if(trip.equals("ROUND")){
+		//if roundtrip, the search is done for fights on the first day and a new arrival day is obtained, which is used by the search flight 
+		//function to find the rturn flights.
+		else if(trip.equals("ROUND")){ 
 			System.out.println("ArrivalTime (YYYY_MM_DD) B/W. 2023_05_06 and 2023_05_31: ");
-			String arrtime = s.nextLine();
-			System.out.println(coach);
+			String arrtime = s.nextLine();			
 			searchFlight(team,departure,arrival,time,seats,coach);
-			System.out.println("***************************************************************");
+			System.out.println("********************************************************************************************");
 			System.out.println("Return Trip");
 			searchFlight(team,arrival,departure,arrtime,seats,coach);			
 			
@@ -85,33 +89,7 @@ public class Driver {
 		FlightSearch.display(flightlist);
 
 	}
-}
-
-//			
-
-		//-----------=================
-		//WOrking code 2,4 uNcomment
-////		String xmlFlights = resSys.getFlights(team, departure,arrival, time,true);
-//		Flights xmlFlights = resSys.getFlights(team, departure,arrival, time,true);
-////		The following function sorts the flights based on the given departure and arrival.
-//		xmlFlights=Sort.filterByArrival(arrival, xmlFlights);
-////		System.out.println(xmlFlights);
-		//-----------==================
-		// Create the aggregate flights
-		
-		
-		
-		//====================================
-		//Working Code Uncomment 
-//		Flights flights = new Flights();
-//		flights.addAll(xmlFlights);
-//		
-//		System.out.println(flights.toString());
-		//=================================
-		
-		
-		
-		
+}	
 		
 	// 	//try to reserve a coach seat on one of the flights
 	// 	Flight flight = flights.get(0);

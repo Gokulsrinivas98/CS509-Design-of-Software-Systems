@@ -4,6 +4,8 @@ import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DecimalFormat;
+
 
 
 import CS509.client.flight.Flight;
@@ -51,6 +53,7 @@ public class FlightSearch{
 				lduration.add(ldur);
 				ticketprice.add(p*seats);}
 		}
+		System.out.println("res size:"+res.size());	
 		return res;
 //		Flights flights = new Flights();
 //		flights.addAll(xmlflights);		
@@ -204,6 +207,7 @@ public class FlightSearch{
 	public static void display(List<Flights> flightlist) {
 //		List<Long> fduration = FlightSearch.flightDuration();
 //		List<Long> lduration = Flight
+		DecimalFormat df = new DecimalFormat("#.##");
 		for (int i = 0; i < flightlist.size(); i++) {
 		    Flights flight = flightlist.get(i);
 		 // get the duration from the fduration list
@@ -213,8 +217,9 @@ public class FlightSearch{
 		    long layduration = lduration.get(i);
 		    long lhours = layduration / 60;
 		    long lminutes = layduration % 60;
+		    String tp = df.format(ticketprice.get(i));
 		    System.out.println(flight.toString());
-		    System.out.println("Total Ticket Price :$"+ticketprice.get(i));
+		    System.out.println("Total Ticket Price :$"+tp);
 		    System.out.printf("Total Layover Time:" +lhours+" Hours "+ lminutes+" Minutes\n");
 		    System.out.printf("Total Trip Duration:" +fhours+" Hours "+ fminutes+" Minutes\n");
 		    System.out.println("********************************************************************************************");
