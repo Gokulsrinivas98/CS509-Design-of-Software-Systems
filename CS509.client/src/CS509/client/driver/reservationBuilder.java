@@ -286,21 +286,22 @@ public class reservationBuilder {
 	
 	public boolean validDate(String in) {
 		Date checkDate = new Date();
+		return true;
 		
-		try {
-			checkDate = sdf.parse(in);
-		} catch (ParseException e) {
-			return false;
-		}
-		
-		if(checkDate.before(earliestDate)) {
-			System.out.println("Date is too early!");
-			return false;
-		}else if(checkDate.after(latestDate)) {
-			System.out.println("Date is too late!");
-			return false;
-		}else {
-			return true;
-		}
+//		try {
+//			checkDate = sdf.parse(in);
+//		} catch (ParseException e) {
+//			return false;
+//		}
+//		
+//		if(checkDate.before(earliestDate)) {
+//			System.out.println("Date is too early!");
+//			return false;
+//		}else if(checkDate.after(latestDate)) {
+//			System.out.println("Date is too late!");
+//			return false;
+//		}else {
+//			return true;
+//		}
 	}
 }

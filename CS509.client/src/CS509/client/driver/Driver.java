@@ -343,8 +343,9 @@ public class Driver {
 				break;
 				
 			case CONFIRM_RESERVATION:
+				//Put our reservation code
 				System.out.println("");
-				System.out.println("Reservation confirmed!");
+				System.out.println("Reservation confirmed!"); //hard coded print
 				System.out.println("Please enter R to return to welcome, or X to exit.");
 				
 				stringIn = s.nextLine();
