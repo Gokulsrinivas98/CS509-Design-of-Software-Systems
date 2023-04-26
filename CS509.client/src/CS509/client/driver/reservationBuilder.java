@@ -1,10 +1,14 @@
 package CS509.client.driver;
 import CS509.client.flight.*;
+import CS509.client.util.Sp;
+import CS509.client.airport.TimeConversion;
 import CS509.client.dao.*;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -22,7 +26,7 @@ public class reservationBuilder {
 		OUTBOUND;
 	}
 	
-	String team = "TeamC";//OOF check this constant.
+	String team = Sp.Database;//OOF check this constant.
 	
 	List<Flights> onewayFlights = new ArrayList<Flights>();
 	List<Flights> DepartureFlights = new ArrayList<Flights>();
@@ -33,13 +37,6 @@ public class reservationBuilder {
 	
 	Trip outboundTrip;
 	Trip inboundTrip;
-	
-//	Calendar cal = GregorianCalendar.getInstance();
-	
-	@SuppressWarnings("deprecation")
-	Date earliestDate = new Date(2023,05,06);
-	@SuppressWarnings("deprecation")
-	Date latestDate = new Date(2023,05,31);
 	
 	ArrayList<Date> outboundDates = new ArrayList<Date>();
 	ArrayList<Date> inboundDates = new ArrayList<Date>();
@@ -64,6 +61,8 @@ public class reservationBuilder {
 	 */
 	public void searchFlights() throws ParseException {
 		//Have to add handling of MULTIPLE departure dates (windows)
+
+//		
 				DepartureFlights.addAll(FlightSearch.searchFlightsWithNoStop(team,departureCode,arrivalCode,departureDate,seats, coach));
 				DepartureFlights.addAll(FlightSearch.searchFlightsWithOneStop(team,departureCode,arrivalCode,departureDate,seats, coach));
 				DepartureFlights.addAll(FlightSearch.searchFlightsWithTwoStop(team,departureCode,arrivalCode,departureDate,seats, coach));
@@ -256,7 +255,7 @@ public class reservationBuilder {
 		boolean completereturn=true;
 		Flights flights1 = this.outboundTrip.getTripFlights();
 		
-		ServerInterface resSys = new ServerInterface();
+//		ServerInterface resSys = new ServerInterface();
 		if(reserveFlight(flights1, this.seatClass)) {
 			complete = true;
 		}
@@ -369,28 +368,18 @@ public class reservationBuilder {
 		}
 	}
 	/**
-	 * 
-	 * @param in
-	 * @return
+	 * Checks if the the given date is between the Start and End dates of the database
+	 * @param userIn User input date.
+	 * @return True if the given date is between the database start and end dates; Else false.
 	 */
-	public boolean validDate(String in) {
-		Date checkDate = new Date();
-		return true;
-//		try {
-//			checkDate = sdf.parse(in);
-//		} catch (ParseException e) {
-//			return false;
-//		}
-//		
-//		if(checkDate.before(earliestDate)) {
-//			System.out.println("Date is too early!");
-//			return false;
-//		}else if(checkDate.after(latestDate)) {
-//			System.out.println("Date is too late!");
-//			return false;
-//		}else {
-//			return true;
-//		}
+	public boolean validDate(String userIn) {
+    	LocalDateTime start = LocalDateTime.parse(Sp.START,DateTimeFormatter.ofPattern("yyyy MMM dd HH:mm"));
+    	LocalDateTime end = LocalDateTime.parse(Sp.END,DateTimeFormatter.ofPattern("yyyy MMM dd HH:mm"));
+    	LocalDateTime dateC =LocalDateTime.parse(TimeConversion.startofDay(userIn),DateTimeFormatter.ofPattern("yyyy MMM dd HH:mm"));
+    	if (dateC.isAfter(start) && dateC.isBefore(end)) {
+    		return true;
+    	}
+    	return false;
 	}
 	/**
 	 * Creates the XML to be used to reserve flights
@@ -429,7 +418,7 @@ public class reservationBuilder {
 	 * Reserves multiple flights simultaneously
 	 * @param flightList
 	 * @param seatClass
-	 * @return true if reserved succesfully
+	 * @return true if reserved successfully
 	 */
 	public boolean reserveFlight(ArrayList<Flight> flightList, String seatClass) {
         boolean isLocked = false;
@@ -438,24 +427,24 @@ public class reservationBuilder {
         String xmlFlights;
 
         // lock server
-        isLocked = ServerInterface.lock("TeamC");
+        isLocked = ServerInterface.lock(Sp.Database);
 
         // if server locked
         // update server
         if (isLocked) {
             isUnlocked = false;
             xmlFlights = getXML(flightList, seatClass);
-            isReserved = ServerInterface.buyTickets("TeamC", xmlFlights);
+            isReserved = ServerInterface.buyTickets(Sp.Database, xmlFlights);
 
             // if reservation is successful
             // unlock server
             if (isReserved) {
-                isUnlocked = ServerInterface.unlock("TeamC");
+                isUnlocked = ServerInterface.unlock(Sp.Database);
                
             }
             // if not, also unlock, and ask to try again.
             else {
-                isUnlocked = ServerInterface.unlock("TeamC");
+                isUnlocked = ServerInterface.unlock(Sp.Database);
                 System.out.println("Please try again.");
                 
             }

@@ -14,7 +14,7 @@ import java.net.URL;
 import CS509.client.util.QueryFactory;
 import CS509.client.flight.Flight;
 import CS509.client.flight.Flights;
-
+import CS509.client.airplane.*;
 
 /**
  * This class provides an interface to the CS509 server. It provides sample methods to perform
@@ -79,6 +79,17 @@ public class ServerInterface {
 		return result.toString();
 	}
 	
+	/**
+	 * Return a String of xml list of all the flights
+	 * Retrieve the list of flights available to the specified ticketAgency via HTTPGet of the server
+	 * @param team
+	 * @param departCode
+	 * @param arrivalCode
+	 * @param day
+	 * @param isByDeparture
+	 * @return
+	 */
+	
 	public Flights getFlights (String team, String departCode,String arrivalCode, String day,boolean isByDeparture) {
 	// public Flight getFlights (String team, String airportCode, String day,boolean isByDeparture) {
 		
@@ -129,6 +140,63 @@ public class ServerInterface {
 		return flights;
 	}
 	
+	/**
+	 * Return an XML list of all the airplanes
+	 * 
+	 * Retrieve the list of airports available to the specified ticketAgency via HTTPGet of the server
+	 * 
+	 * @param team identifies the ticket agency requesting the information
+	 * @return xml string listing all airplanes
+	 */
+	
+	public String getAirplanes (String team) {
+
+		URL url;
+		HttpURLConnection connection;
+		BufferedReader reader;
+		String line;
+		StringBuffer result = new StringBuffer();
+
+		try {
+			/**
+			 * Create an HTTP connection to the server for a GET 
+			 */
+			url = new URL(mUrlBase + QueryFactory.getAirplanes(team));
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("User-Agent", team);
+
+			/**
+			 * If response code of SUCCESS read the XML string returned
+			 * line by line to build the full return string
+			 */
+			int responseCode = connection.getResponseCode();
+			if ((responseCode >= 200) && (responseCode <= 299)) {
+				InputStream inputStream = connection.getInputStream();
+				String encoding = connection.getContentEncoding();
+				encoding = (encoding == null ? "URF-8" : encoding);
+
+				reader = new BufferedReader(new InputStreamReader(inputStream));
+				while ((line = reader.readLine()) != null) {
+					result.append(line);
+				}
+				reader.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result.toString();
+	}
+	
+	/**
+	 * Lock the database for updating by the specified team. The operation will fail if the lock is held by another team.
+	 * 
+	 * @param teamName is the name of team requesting server lock
+	 * @return true if the server was locked successfully, else false
+	 */
 	public static boolean lock (String team) {
 		URL url;
 		HttpURLConnection connection;
@@ -170,6 +238,15 @@ public class ServerInterface {
 		return true;
 	}
 
+	/**
+	 * Unlock the database previous locked by specified team. The operation will succeed if the server lock is held by the specified
+	 * team or if the server is not currently locked. If the lock is held be another team, the operation will fail.
+	 * 
+	 * The server interface to unlock the server interface uses HTTP POST protocol
+	 * 
+	 * @param teamName is the name of the team holding the lock
+	 * @return true if the server was successfully unlocked.
+	 */
 	public static boolean unlock (String team) {
 		URL url;
 		HttpURLConnection connection;
@@ -217,9 +294,11 @@ public class ServerInterface {
 		return true;
 	}
 
+	
 	/**
-	 * 
-	 * @param flightNumber
+	 * Reserve seat using flight number and seat type 
+	 * @param team
+	 * @param xmlReservation is the xml containing user defined flight number and seat type
 	 * @return true if SUCCESS code returned from server
 	 */
 	public static boolean buyTickets(String team, String xmlReservation) {

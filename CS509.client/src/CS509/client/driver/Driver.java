@@ -3,6 +3,7 @@ package CS509.client.driver;
 import CS509.client.dao.ServerInterface;
 import CS509.client.driver.reservationBuilder.flDirection;
 import CS509.client.flight.*;
+import CS509.client.util.Sp;
 import CS509.client.airport.*;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.text.ParseException;
 import java.util.Scanner;
 
 import CS509.client.airport.*;
-
+import CS509.client.airplane.*;
 /**
  * @author Gokul
  * @author Akaash
@@ -47,10 +48,11 @@ public class Driver {
 		reservationBuilder resBuild = new reservationBuilder();
 		TimeConversion converter = new TimeConversion("timezone.csv");
 		Scanner s = new Scanner(System.in);
-		String team = "TeamC";
+		final String team = Sp.Database;
 		State uiState = State.WELCOME;
 		String stringIn = new String();
 		Airports airports = new Airports();
+		
 		boolean justSorted = false;
 		//------------
 
@@ -87,6 +89,7 @@ public class Driver {
 				String xmlAirport = resSys.getAirports(team);
 				airports.addAll(xmlAirport);
 				Flight.setmAirports(airports);
+				
 				System.out.println("Found Aiports!");
 				System.out.println("Ready for input. Enter 3-character departure Airport code:");	
 				stringIn = s.nextLine().toUpperCase();
@@ -116,7 +119,7 @@ public class Driver {
 					}else if(stringIn.equalsIgnoreCase("R")) {
 						uiState = State.WELCOME;
 					}else {
-						System.out.println("Improperly formed input. Please review the directions.");
+						System.out.println("Improper Date. Please provide a date between 2023_05_06 and 2023_05_31 ");
 					}
 				break;
 				
@@ -148,14 +151,14 @@ public class Driver {
 					}else if(stringIn.equalsIgnoreCase("R")) {
 						uiState = State.WELCOME;
 					}else {
-						System.out.println("Improperly formed input. Please review the directions.");
+						System.out.println("Improper Date. Please provide a date between 2023_05_06 and 2023_05_31 ");
 					}
 				//Same note as above in GET_DEP_DATES state. Implement multiple dates of arrival/departure.
 				break;
 				
 			case GET_ROUND_TRIP:
 				System.out.println("Trip Type (oneway, round):");
-				stringIn = s.nextLine().toUpperCase();
+				stringIn = s.nextLine();
 				resBuild.setTripType(stringIn);
 					if(resBuild.oneWay) {
 						uiState = State.GET_CLASS;
@@ -172,7 +175,7 @@ public class Driver {
 				
 			case GET_CLASS:
 				System.out.println("Seating Class (Coach, FirstClass): ");
-				stringIn = s.nextLine().toUpperCase();
+				stringIn = s.nextLine();
 				resBuild.setSeatClass(stringIn);
 				if(resBuild.coach || resBuild.firstClass) {
 					uiState = State.SEARCH;
@@ -382,148 +385,3 @@ public class Driver {
 	}
 
 }
-
-///**
-// * 
-// */
-//
-//package CS509.client.driver;
-////------------
-//import java.util.Scanner;
-//import java.io.IOException;
-//import java.text.ParseException;
-//import java.util.List;
-////------------
-//import CS509.client.dao.ServerInterface;
-//import CS509.client.flight.Flight;
-//import CS509.client.flight.Flights;
-//import CS509.client.airport.Airports;
-//import CS509.client.flight.Sort;
-//import CS509.client.driver.FlightSearch;
-//import CS509.client.airport.TimeConversion;
-//
-///**
-// * @author gokul
-// *
-// */
-//public class Driver {
-//
-//	/**
-//	 * @param args
-//	 * @throws ParseException 
-//	 * @throws IOException 
-//	 */
-//	public static void main(String[] args) throws ParseException, IOException {
-//		ServerInterface resSys = new ServerInterface();
-//		TimeConversion converter = new TimeConversion("timezone.csv");
-//		//------------
-//		Scanner s = new Scanner(System.in);
-//		String team = "TeamC";
-//		
-//		String xmlAirport = resSys.getAirports(team);
-//		Airports airports = new Airports();
-//		airports.addAll(xmlAirport);
-////		TimeConversion.getZones(airports);
-////		System.out.println(TimeConversion.loctime(airports,"2023 May 06 14:44 GMT","HNL"));
-//		Flight.setmAirports(airports);
-////		//=====================================================
-//		System.out.println("departAirportCode:");	
-//	    String departure = s.nextLine().toUpperCase();
-//		System.out.println("departTime (YYYY_MM_DD) B/W. 2023_05_06 and 2023_05_31:");
-//		String time = s.nextLine();
-//		System.out.println("arrivalAiportCode:");
-//		String arrival = s.nextLine().toUpperCase();
-//		System.out.println("Trip Type (O:oneway, R:round):");
-//		String trip = s.nextLine().toUpperCase();
-//		System.out.println("Seating Class (Coach, FirstClass): ");
-//		String sclass = s.nextLine().toUpperCase();
-//		System.out.println("Number of Seats :");
-//		int seats = s.nextInt();
-//		s.nextLine(); 
-////		//=======================================================
-//
-//		//When s.nextInt() is called, it reads only the integer value and leaves the newline character in the input buffer.
-//		//When s.nextLine() is called after s.nextInt(), it reads the newline character and stops, resulting in no input being 
-//		//taken from the user. To resolve this issue, an extra s.nextLine() call after s.nextInt() is added to consume the 
-//		//newline character from the input buffer.
-////====================
-//		boolean coach = true; //1 for coach and 0 for FirstClass
-//		// Try to get a list of airports
-////		==================================
-//		if (sclass.equals("FIRSTCLASS")) {
-//			coach = false;			
-//		}
-//		if (trip.equals("O")) { //if oneway, the search is done for fights on the first day 
-//			searchFlight(team,departure,arrival,time,seats,coach);}
-//		//if roundtrip, the search is done for fights on the first day and a new arrival day is obtained, which is used by the search flight 
-//		//function to find the rturn flights.
-//		else if(trip.equals("R")){ 
-//			System.out.println("ArrivalTime (YYYY_MM_DD) B/W. 2023_05_06 and 2023_05_31: ");
-//			String arrtime = s.nextLine();			
-//			searchFlight(team,departure,arrival,time,seats,coach);
-//			System.out.println("********************************************************************************************");
-//			System.out.println("Return Trip");
-//			searchFlight(team,arrival,departure,arrtime,seats,coach);			
-//			
-//		}
-//		
-//		
-//		
-//		
-//	}
-//	public static void searchFlight(String team, String departure,String arrival, String time,int seats, boolean coach) throws ParseException {
-//// ----------------------------------------WITHOUT ANY LAYOVERS-----------------------------------------
-//		System.out.println("Without Layovers");
-//		List<Flights> flightli = FlightSearch.searchFlightsWithNoStop(team,departure,arrival,time,seats, coach);
-//		FlightSearch.display(flightli);
-//		
-//// ------------------------------------------WITH  ONE  LAYOVERS----------------------------------------s
-//		System.out.println("With One Layover");
-//		List<Flights> flightlis = FlightSearch.searchFlightsWithOneStop(team,departure,arrival,time,seats,coach);
-//		FlightSearch.display(flightlis);
-////		
-//// ------------------------------------------WITH  TWO  LAYOVERS----------------------------------------
-//		System.out.println("With Two Layover");
-//		List<Flights> flightlist = FlightSearch.searchFlightsWithTwoStop(team,departure,arrival,time,seats,coach);
-//		FlightSearch.display(flightlist);
-//
-////	=================================
-//	
-//		
-//	// 	//try to reserve a coach seat on one of the flights
-////	 	Flight flight = flights.get(0);
-//	 	String flightNumber = "27165";//flight.getmNumber();
-//	 	int seatsReservedStart = 62;//flight.getmSeatsCoach();
-//////	========================	
-//	 	String xmlReservation = "<Flights>"
-//	 			+ "<Flight number=\"27165\"" + " seating=\"Coach\" />"
-//	 			+ "</Flights>";
-//		
-//	 	ServerInterface resSys = new ServerInterface();
-//	// 	// Try to lock the database, purchase ticket and unlock database
-//	 	resSys.lock("TeamC");
-//	 	resSys.buyTickets("TeamC", xmlReservation);
-//	 	resSys.unlock("TeamC");
-//////	==========================
-//	// 	// Verify the operation worked
-//	 	Flights xmlFlights = resSys.getFlights(team,departure,arrival,time,true);
-////	 	// System.out.println(xmlFlights);
-////	 	flights.clear();
-////	 	flights.addAll(xmlFlights);
-////	
-////	 	// Find the flight number just updated
-//	 	int seatsReservedEnd = seatsReservedStart;
-//	 	for (Flight f : xmlFlights) {
-//	 		String tmpFlightNumber = f.getmNumber();
-//	 		if (tmpFlightNumber.equals(flightNumber)) {
-//	 			seatsReservedEnd = f.getmSeatsCoach();
-//	 			break;
-//	 		}
-//	 	}
-//	 	if (seatsReservedEnd == (seatsReservedStart + 1)) {
-//	 		System.out.println("Seat Reserved Successfully");
-//	 	} else {
-//	 		System.out.println("Reservation Failed");
-//	 	}
-//}}
-//		

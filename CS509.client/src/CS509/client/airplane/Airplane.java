@@ -3,6 +3,8 @@
  */
 package CS509.client.airplane;
 
+import CS509.client.airport.Airports;
+
 /**
  * This class stores information about an airplane. This class presents the
  * same information as received from the CS509 server after conversion from XML strings
@@ -22,6 +24,7 @@ public class Airplane {
 	private String mModel;
 	private int mFirstClassSeats;
 	private int mCoachSeats;
+	
 	
 	/**
 	 * default constructor
@@ -129,4 +132,6 @@ public class Airplane {
 	public int coachSeats () {
 		return mCoachSeats;
 	}
+	
 }
+

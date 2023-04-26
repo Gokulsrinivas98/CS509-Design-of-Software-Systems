@@ -47,7 +47,7 @@ public class TimeConversion {
     
     private final static Map<String, String[]> airportData = new HashMap<>();
 /**
- * 
+ * Read CSV file and populate airportData map
  * @param csvFilePath
  * @throws IOException
  */
@@ -62,7 +62,7 @@ public class TimeConversion {
         reader.close();
     }
 /**
- * 
+ * Converts the time in GMT into time local to the given airport code
  * @param gmtTime
  * @param airportCode
  * @return Time in zone local to the airport in yyyy MMM dd HH:mm zzz format.
