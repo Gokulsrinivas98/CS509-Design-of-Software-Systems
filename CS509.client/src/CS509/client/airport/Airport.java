@@ -37,9 +37,6 @@ public class Airport {
 	 * 
 	 * Constructor without params. Requires object fields to be explicitly
 	 * set using setter methods
-	 * 
-	 * @precondition None
-	 * @postcondition member attributes are initialized to invalid default values
 	 */	
 	public Airport () {
 		mName = "";
@@ -57,9 +54,6 @@ public class Airport {
 	 * @param code The 3 letter code for the airport
 	 * @param latitude The north/south coordinate of the airport 
 	 * @param longitude The east/west coordinate of the airport
-	 * 
-	 * @preconditions code is a 3 character string, latitude and longitude are valid values
-	 * @postconditions member attributes are initialized with input parameter values
 	 */
 	public Airport (String name, String code, double latitude, double longitude) {
 		mName = name;
@@ -77,8 +71,6 @@ public class Airport {
 	 * @param code The 3 letter code for the airport
 	 * @param latitude is the string representation of latitude decimal format 
 	 * @param longitude is the String representation of the longitude in decimal format
-	 * 
-	 * @preconditions the latitude and longitude are valid String representations of decimal values
 	 */
 	public Airport (String name, String code, String latitude, String longitude) {
 		this (name, code, Double.parseDouble(latitude), Double.parseDouble(latitude));
@@ -135,6 +127,7 @@ public class Airport {
 	 * @return The north/south coordinate of the airport 
 	 */
 	public double latitude () {
+
 		return mLatitude;
 	}
 	
@@ -219,7 +212,6 @@ public class Airport {
 		
 		return true;
 	}
-	
 	/**
 	 * Provide a method to return the string representation of Airport
 	 * 
@@ -229,5 +221,7 @@ public class Airport {
 	@Override
 	public String toString() {
 		return this.mCode + ": " + this.mName;
+		// return this.mName;
 	}
+
 }

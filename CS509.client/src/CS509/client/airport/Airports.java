@@ -42,9 +42,6 @@ public class Airports extends ArrayList<Airport> {
 	 * @param xmlAirports XML string containing set of airports 
 	 * @return true if the collection was modified, false otherwise
 	 * @throws NullPointerException included to keep signature consistent with other addAll methods
-	 * 
-	 * @preconditions the xmlAirports string adheres to the format specified by the server API
-	 * @postconditions the [possibly empty] set of Airports in the XML string are added to collection
 	 */
 	public boolean addAll (String xmlAirports) throws NullPointerException {
 		
@@ -108,8 +105,6 @@ public class Airports extends ArrayList<Airport> {
 	 * Processes a DOM Node that describes an Airport and creates an Airport object from the information
 	 * @param nodeAirport is a DOM Node describing an Airport
 	 * @return Airport object created from the DOM Node representation of the Airport
-	 * 
-	 * @preconditions nodeAirport is of format specified by CS509 server API
 	 */
 	private Airport buildAirport (Node nodeAirport) {
 		/**
@@ -162,11 +157,10 @@ public class Airports extends ArrayList<Airport> {
 	}
 	
 	/**  Does the list contain the airport?
-	 * @param String input 3 digit code
+	 * @param code String input 3 digit code
 	 * @return Boolean true/false if the list has the associated airport.
 	 */
-	
-	public Boolean containsCode(String code) {
+	 public Boolean containsCode(String code) {
 		Boolean containsCode = false;
 		
 		Iterator<Airport> iter = this.iterator();
@@ -180,24 +174,5 @@ public class Airports extends ArrayList<Airport> {
 		}
 		
 		return containsCode;
-	}
-	
-	/** toString override for the Airports object.
-	 * @author lombardi
-	 * @return String
-	 */
-	@Override
-	public String toString() {
-		String builtList = new String();
-		Iterator<Airport> iter = this.iterator();
-		
-		if(!iter.hasNext()) {
-			return "No airports in list";
-		}
-		
-		while(iter.hasNext()) {
-			builtList += iter.next().toString() + "\r\n";
-		}
-		return builtList;
 	}
 }

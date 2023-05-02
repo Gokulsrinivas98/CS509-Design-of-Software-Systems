@@ -4,6 +4,7 @@
 package CS509.client.util;
 
 /**
+ * QueryFactory
  * @author blake
  *
  */
@@ -21,6 +22,14 @@ public class QueryFactory {
 		String query = "?team=" + team;
 		query = query + "&action=list";
 		query = query + "&list_type=departing";
+		query = query + "&airport=" + airportCode;
+		query = query + "&day=" + day;
+		return query;
+	}
+	public static String getFlightsArriving(String team, String airportCode, String day) {
+		String query = "?team=" + team;
+		query = query + "&action=list";
+		query = query + "&list_type=arriving";
 		query = query + "&airport=" + airportCode;
 		query = query + "&day=" + day;
 		return query;
