@@ -24,3 +24,7 @@ The system allows user to:
 
 ![App Screenshot](https://github.com/Gokulsrinivas98/CS509-Design-of-Software-Systems/blob/main/OUTPUT.gif)
 
+## Related
+
+[Requirements Analysis Document (RAD)](https://github.com/Gokulsrinivas98/CS509-Design-of-Software-Systems/blob/main/RAD.pdf)
+[Test Verification](https://github.com/Gokulsrinivas98/CS509-Design-of-Software-Systems/blob/main/Test_Verification.pdf)
