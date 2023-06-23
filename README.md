@@ -7,7 +7,7 @@ The app is written in Java with a console based UI on a remote server establishe
 
 The system allows user to:
 -  Search either non-stop flights or connecting flights with a maximum of two layovers by defining the departure/arrival airport, departure/return date, trip type, and seat class.
-  -   The system takes care of the layover times and shows all times wrt the local airport     
+   - The system takes care of the layover times and shows all times wrt the local airport     
 - View search results with correct flight information.
 - Sort and filter search results.
 - Reserve either one-way or round-trip flights.
